@@ -12,7 +12,7 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get("/api/imagesearch/:search", function (req, res) {
+app.get("/api/imagesearch/:search", function (req, response) {
 	var search = req.params.search;
 
 	// save search in database
@@ -23,16 +23,16 @@ app.get("/api/imagesearch/:search", function (req, res) {
 	// get 10 images with api
 	var offset = req.query.offset || 0;
 
-	Bing.images(term, {top: 10, skip: offset}, function (err, response, body) {
+	Bing.images(term, {count: 10, offset: offset}, function (err, res, body) {
 		if (err) {
 			console.error(err);
 			return res.status(500).end(err.message);
 		}
-		res.json(body.d.results.map(function (el) {
+		response.json(body.value.map(function (el) {
 			return {
-				alt: el.Title,
-				page: el.SourceUrl,
-				image: el.MediaUrl
+				alt: el.name,
+				img: el.contentUrl,
+				src: el.hostPageUrl
 			};
 		}));
 	});
