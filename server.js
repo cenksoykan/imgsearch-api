@@ -1,5 +1,5 @@
 var express = require('express');
-const path = require('path');
+var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
 var Bing = require('node-bing-api')({accKey: process.env.API_KEY});
 
